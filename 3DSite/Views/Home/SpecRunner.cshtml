@@ -1,0 +1,22 @@
+﻿@{
+    ViewBag.Title = "Contact";
+}
+    <title>Jasmine Test Runner</title>
+    <link rel="stylesheet" type="text/css" href="~/css/jasmine.css">
+    <script type="text/javascript" src="~/Scripts/jasmine.js"></script>
+    <script type="text/javascript" src="~/Scripts/jasmine-html.js"></script>
+
+    <!-- include source files here... -->
+    <script type="text/javascript" src="~/Scripts/Loaders/ModelLoader.js"></script>
+    <script type="text/javascript" src="~/Scripts/GameClasses/GameObject.js"></script>
+
+    <!-- include spec files here... -->
+    <script type="text/javascript" src="~/Scripts/Specs/ModelLoaderSpec.js"></script>
+    <script type="text/javascript" src="~/Scripts/Specs/GameObjectSpec.js"></script>
+
+    <script type="text/javascript">
+        jasmine.getEnv().addReporter(new jasmine.TrivialReporter());
+        jasmine.getEnv().execute();
+    </script>
+
+
