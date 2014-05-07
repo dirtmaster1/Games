@@ -17,6 +17,7 @@ var keyboard;
 var controls;
 //game time
 var clock = new THREE.Clock();
+//git test
 
 LoadContent()
 Initialize();
