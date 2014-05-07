@@ -87,27 +87,33 @@ describe("GameScreenManager", function () {
 
 });
 
-describe("Move function", function () {
+describe("Chase Camera", function () {
+
+    var targetObject;
+    var chaseCamera;
+    var offSet;
 
     beforeEach(function () {
+        targetObject = new THREE.Object3D();
+        targetObject.position.set(0, 0, 100);
+        chaseCamera = new THREE.PerspectiveCamera(45, 7 / 5, 0.1, 20000);
+        offSet = 100;
+        chaseCamera.position.set(targetObject.position.x, targetObject.position.y, targetObject.position.z + offSet);
+    });
+
+    it("Distance of camera and target should always be equal", function () {
+        var startDistance = chaseCamera.position.distanceTo(targetObject.position);
+        targetObject.translateX(100);
+        chaseCamera.position.set(targetObject.position.x, targetObject.position.y, targetObject.position.z + offSet);
+        var endDistance = chaseCamera.position.distanceTo(targetObject.position);
+        expect(startDistance).toBe(endDistance);
 
     });
 
-    it("Should move object by correct amount", function () {
+    it("Rotation of camera and target should always be equal", function () {
 
 
     });
-
-    it("Should rotate object by correct amount", function () {
-
-
-    });
-
-    it("New position should velocity * change in time from last update", function () {
-
-
-    });
-
 });
 
 describe("Shoot function", function () {
