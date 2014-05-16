@@ -1,32 +1,24 @@
 ﻿var gameObjectList = new Array();
 var modelList = new Array();
+var controlsAttachedFlag;
+var goo = new GameObjectManager();
 var md = new ModelData(1, new THREE.Object3D());
 modelList.push(md);
 
 describe("GameObjectManager", function () {
     
-
-    beforeEach(function () {
-        
+    beforeEach(function () { 
     });
 
     it("Create 5 game objects and add to list", function () {
-        
-        var goo = new GameObjectManager();
-            goo.CreateGameObjects(5, "Enemy", 1);
-        expect(gameObjectList.length).toBe(5);
-
+        goo.CreateGameObjects(5, "Enemy", 1, modelList);
+        expect(goo.gameObjectList.length).toBe(5);
     });
 
     it("Create single game object and add to list", function () {
-
-        var goo = new GameObjectManager();
-        goo.CreateGameObject("Enemy", 1, new THREE.Vector3(), Math.PI);
-        expect(gameObjectList.length).toBe(6);
-
+        goo.CreateGameObject("Enemy", 1, new THREE.Vector3(), Math.PI, modelList);
+        expect(goo.gameObjectList.length).toBe(6);
     });
-
-
 });
 
 describe("GameScreen", function () {

@@ -1,23 +1,15 @@
-﻿//game display objects
-var gamePlayScene, gamePlayCamera, renderer;
-var splashScene, splashCamera;
-//game screen objects
-var gamePlayScreen, splashScreen;
-//game lists
-var modelList = [];
-var gameObjectList = [];
+﻿//game lists
+var renderer;
 //game flags
-var loadContentCompleteFlag = false;
 var controlsAttachedFlag = false;
 //managers
-var gameObjectManager;
-var gameScreenManager;
+var gameObjectManager = new GameObjectManager();
+var gameScreenManager = new GameScreenManager(new GameScreen());
 //input
-var keyboard;
+var keyboard = new KeyboardState();;
 var controls;
 //game time
 var clock = new THREE.Clock();
-//git test
 
 LoadContent()
 Initialize();
@@ -25,14 +17,15 @@ Render();
 
 function LoadContent() {
     //MODEL LIST
-    modelListPath = "/Scripts/Loaders/ModelLoadList.js";
-    modelLoader = new ModelLoader();
+    var modelListPath = "/Scripts/Loaders/ModelLoadList.js";
+    var modelLoader = new ModelLoader();
+    var modelList = [];
     modelLoader.Load(modelListPath, function (data) {
         data.Models.forEach(function (model) {
 
             function loadContentComplete() {
                 if (data.Models.length == modelList.length) {
-                    loadContentCompleteFlag = true;
+                    gameObjectManager.Initialize(modelList);
                 };
 
             }
@@ -93,83 +86,20 @@ function LoadContent() {
 }
 
 function Initialize() {
-    //Managers
-    gameObjectManager = new GameObjectManager();
-    keyboard = new KeyboardState();
+    gameScreenManager.Initialize();
 
-    InitializeGameScreens()
-
-    //Create renderer
-    //RENDER
     renderer = new THREE.WebGLRenderer();
     renderer.setSize(window.innerWidth, window.innerHeight);
     document.body.appendChild(renderer.domElement);
 }
 
 function Render() {
-    
     var delta = clock.getDelta();
     keyboard.update();
-    gameScreenManager.Update(keyboard);
-
-    if (controlsAttachedFlag == true) {
-        controls.update(delta);
-    }
+    gameScreenManager.Update(keyboard, delta);
 
     requestAnimationFrame(Render);
     renderer.render(gameScreenManager.currentScreen.scene, gameScreenManager.currentScreen.camera);
-
-    if (loadContentCompleteFlag == true)
-    {
-        gameObjectManager.Initialize();
-        loadContentCompleteFlag = false;
-    }
 }
 
-function InitializeGameScreens() {
-    //Create splashScreen
-    splashScene = new THREE.Scene();
-    splashCamera = new THREE.OrthographicCamera(window.innerWidth / -2, window.innerWidth / 2, window.innerHeight / 2, window.innerHeight / -2, 1, 1000);
-    splashScene.add(splashCamera);
-    splashCamera.position.set(0, 150, 400);
-    splashCamera.lookAt(splashScene.position);
-    var splashAmbientLight = new THREE.AmbientLight(0x111111);
-    splashScene.add(splashAmbientLight);
-    var splashLight = new THREE.PointLight(0xffffff);
-    splashLight.position.set(-100, 200, 100);
-    splashScene.add(splashLight);
-
-    var splashScreenTexture = new THREE.ImageUtils.loadTexture('Content/Images/SplashScreen.jpg');
-    var splashScreenMaterial = new THREE.MeshBasicMaterial({ map: splashScreenTexture, side: THREE.DoubleSide });
-    var splashScreenGeometry = new THREE.PlaneGeometry(1000, 1000, 10, 10);
-    var splashScreenMesh = new THREE.Mesh(splashScreenGeometry, splashScreenMaterial);
-    splashScreenMesh.position.z = -500;
-    splashScreenMesh.position.y = -150;
-    splashScene.add(splashScreenMesh);
-
-    splashScreen = new GameScreen("SplashScreen", splashScene, splashCamera);
-
-    //Create gamePlayScreen
-    gamePlayScene = new THREE.Scene();
-    // CAMERA
-    gamePlayCamera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 20000);
-    gamePlayScene.add(gamePlayCamera);
-    gamePlayCamera.position.set(0, 0, 2000);
-    gamePlayCamera.lookAt(gamePlayScene.position);
-    // LIGHT
-    var ambientLight = new THREE.AmbientLight(0x444444);
-    gamePlayScene.add(ambientLight);
-    var light = new THREE.PointLight(0xffffff);
-    light.position.set(0, 0, 0);
-    gamePlayScene.add(light);
-    var directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
-    directionalLight.position.set(0, 1, 0);
-    gamePlayScene.add(directionalLight);
-    gamePlayScreen = new GameScreen("GamePlayScreen", gamePlayScene, gamePlayCamera);
-
-    gameScreenManager = new GameScreenManager(splashScreen);
-
-    gameScreenManager.gameScreenList["splashScreen"] = splashScreen;
-    gameScreenManager.gameScreenList["gamePlayScreen"] = gamePlayScreen;
-}
 
