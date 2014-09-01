@@ -77,6 +77,10 @@ describe("GameScreenManager", function () {
         expect(gSM).toBeDefined();
     });
 
+    it("Update game scene", function () {
+        
+    });
+
 });
 
 describe("Chase Camera", function () {
@@ -103,7 +107,11 @@ describe("Chase Camera", function () {
     });
 
     it("Rotation of camera and target should always be equal", function () {
-
+        var startRotation = chaseCamera.rotation;
+        targetObject.translateX(100);
+        chaseCamera.position.set(targetObject.position.x, targetObject.position.y, targetObject.position.z + offSet);
+        var endDistance = chaseCamera.position.distanceTo(targetObject.position);
+        expect(startDistance).toBe(endDistance);
 
     });
 });

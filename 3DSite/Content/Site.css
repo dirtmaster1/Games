@@ -12,6 +12,7 @@ body {
     font-family: "Segoe UI", Verdana, Helvetica, Sans-Serif;
     margin: 0;
     padding: 0;
+    
 }
 
 a {
@@ -99,8 +100,8 @@ h5, h6 {
 }
 
 #body {
-    background-color: #efeeef;
-    clear: both;
+    position: absolute;
+    /*clear: both;*/
     padding-bottom: 35px;
 }
 

@@ -86,7 +86,7 @@ function LoadContent() {
 }
 
 function Initialize() {
-    gameScreenManager.Initialize();
+    gameScreenManager.Initialize($);
 
     renderer = new THREE.WebGLRenderer();
     renderer.setSize(window.innerWidth, window.innerHeight);

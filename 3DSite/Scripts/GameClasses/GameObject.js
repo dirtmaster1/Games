@@ -16,14 +16,18 @@ GameObjectManager.prototype.Initialize = function (models) {
     var modelList = models;
     this.CreateGameObjects(5, "Enemy", 3, modelList);
     this.CreateGameObject("PlayerShip", 1, new THREE.Vector3(0, 0, 500), Math.PI, modelList);
+    //this.CreateGameObject("PlayerShip", 1, new THREE.Vector3(0, 0, 500), 0, modelList);
 
+
+
+    // loop thru game objects to place objects in scene and find player ship and bind controls
     for (var i = 0; i < this.gameObjectList.length; i++) {
         
         gameScreenManager.gameScreenList["gamePlayScreen"].scene.add(this.gameObjectList[i].model)
 
-        //attach and configure fly controls to player ship
+        //bind and configure fly controls to player ship
         if (this.gameObjectList[i].name == 'PlayerShip1') {
-            controls = new THREE.FlyControls(this.gameObjectList[i].model);
+            controls = new THREE.ShipControls(this.gameObjectList[i].model);
             controls.movementSpeed = 1000;
             controls.rollSpeed = Math.PI / 5;
             controls.autoForward = false;
@@ -101,9 +105,39 @@ GameScreen.prototype.Update = function (keyboard, delta, scope) {
     if (this.name == "GamePlayScreen") {
         if (controlsAttachedFlag == true) {
             controls.update(delta);
+
+            for (var i = 0; i < gameObjectManager.gameObjectList.length; i++) {
+
+                if (gameObjectManager.gameObjectList[i].name == 'PlayerShip1') {
+                   
+                    var relativeCameraOffset = new THREE.Vector3(0, 200, -1000);
+                    var cameraOffset = relativeCameraOffset.applyMatrix4(gameObjectManager.gameObjectList[i].model.matrixWorld);
+
+                    var cameraUp = new THREE.Vector3(0, 1, 0);
+                    var cameraUpMatrix = new THREE.Matrix4();
+                    var cameraUpRotMatrix = cameraUpMatrix.makeRotationFromQuaternion(gameObjectManager.gameObjectList[i].model.quaternion)
+
+                    this.camera.position.x = cameraOffset.x;
+                    this.camera.position.y = cameraOffset.y;
+                    this.camera.position.z = cameraOffset.z;
+                    this.camera.up = cameraUp.applyMatrix4(cameraUpRotMatrix);
+                    this.camera.lookAt(gameObjectManager.gameObjectList[i].model.position);
+
+                    //binding ship position property to UI
+                    var t = gameObjectManager.gameObjectList[i].model;
+                    document.querySelector('#shipPosition').innerHTML = 'Ship Position: <br /> x = ' + t.position.x + ', <br /> y = ' + t.position.y + ', <br /> z = ' + t.position.z;
+                    document.querySelector('#cameraPosition').innerHTML = 'Camera Position: <br /> x = ' + this.camera.position.x + ', <br /> y = ' + this.camera.position.y + ', <br /> z = ' + this.camera.position.z;
+
+                }
+            }
         }
     }
 }
+
+GameScreen.prototype.UpdateGameScene = function (scope) {
+
+}
+
 
 function GameScreenManager(gameScreen) {
 
@@ -145,8 +179,10 @@ GameScreenManager.prototype.Initialize = function () {
     // CAMERA
     gamePlayCamera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 20000);
     gamePlayScene.add(gamePlayCamera);
-    gamePlayCamera.position.set(0, 0, 2000);
-    gamePlayCamera.lookAt(gamePlayScene.position);
+    //gamePlayCamera.position.set(0, 0, 2000);
+    //gamePlayCamera.lookAt(gamePlayScene.position);
+    //HUD
+    
     // LIGHT
     var ambientLight = new THREE.AmbientLight(0x444444);
     gamePlayScene.add(ambientLight);
