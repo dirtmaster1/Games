@@ -258,7 +258,9 @@
     <Content Include="Content\Models\Feisar_Ship.mtl" />
     <Content Include="Content\Models\Feisar_Ship.obj" />
     <Content Include="Content\Models\space_cruiser.obj" />
-    <Content Include="Content\Fonts\aurora.ttf" />
+    <EmbeddedResource Include="Content\Fonts\aurora.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />
     <Content Include="Scripts\FlyControls.js" />
     <Content Include="Scripts\game.js" />

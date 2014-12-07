@@ -107,24 +107,34 @@ describe("Chase Camera", function () {
     });
 
     it("Rotation of camera and target should always be equal", function () {
-        var startRotation = chaseCamera.rotation;
-        targetObject.translateX(100);
-        chaseCamera.position.set(targetObject.position.x, targetObject.position.y, targetObject.position.z + offSet);
-        var endDistance = chaseCamera.position.distanceTo(targetObject.position);
-        expect(startDistance).toBe(endDistance);
+        targetObject.rotateOnAxis(new THREE.Vector3(0, 0, 1), Math.PI)
+        chaseCamera.rotation.set(targetObject.rotation.x, targetObject.rotation.y, targetObject.rotation.z);
+        expect(chaseCamera.rotation.z).toBe(targetObject.rotation.z);
 
     });
 });
 
-describe("Shoot function", function () {
+
+
+describe("Mouse Picking", function () {
+
+    var camera = new THREE.PerspectiveCamera(45, 7 / 5, 1, 10000);
+    var projector = new THREE.Projector();
+    var mouseVector = new THREE.Vector3();
 
     beforeEach(function () {
-
+        
+        camera.position.set(0, 0, 10);
+        camera.lookAt(new THREE.Vector3(0, 0, 0));
+      
     });
 
-    it("Should create and fire one shot", function () {
-
-
+    it("Should Intersect with Object", function () {
+        mouseVector.x = 0;
+        mouseVector.y = 0;
+        var raycaster = projector.pickingRay(mouseVector.clone(), camera);
+        //TODO create cube object to use as test object
+        var intersects = raycaster.intersectObjects(cubes.children);
     });
 
 });

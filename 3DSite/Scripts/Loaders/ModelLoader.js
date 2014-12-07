@@ -2,11 +2,8 @@
       
 };
 
-ModelLoader.prototype.Load = function (url, callback) {
-    this.LoadAjaxJson(url, this, callback);
-};
 
-ModelLoader.prototype.LoadAjaxJson = function (url, context, callback) {
+ModelLoader.prototype.Load = function (url, callback) {
 
     var json;
     var xhr = new XMLHttpRequest();

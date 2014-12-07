@@ -1,4 +1,6 @@
-﻿//GAMEOBJECT CLASSES
+﻿////////////////////////////////////////////////////////////////////////////////
+////////////////////////////GameObject CLASS////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 function GameObject(name, type, model) {
     this.name = name;
     this.type = type;
@@ -7,6 +9,9 @@ function GameObject(name, type, model) {
 
 }
 
+////////////////////////////////////////////////////////////////////////////////
+/////////////////////GameObjectManager CLASS////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 function GameObjectManager() {
     this.gameObjectList = [];
 }
@@ -17,8 +22,6 @@ GameObjectManager.prototype.Initialize = function (models) {
     this.CreateGameObjects(5, "Enemy", 3, modelList);
     this.CreateGameObject("PlayerShip", 1, new THREE.Vector3(0, 0, 500), Math.PI, modelList);
     //this.CreateGameObject("PlayerShip", 1, new THREE.Vector3(0, 0, 500), 0, modelList);
-
-
 
     // loop thru game objects to place objects in scene and find player ship and bind controls
     for (var i = 0; i < this.gameObjectList.length; i++) {
@@ -49,9 +52,9 @@ GameObjectManager.prototype.CreateGameObjects = function (count, type, modelId, 
     for (i = start; i < count + start; i++)
     {
         var temp = modelData[0].model.clone();
-        var x = getRandomArbitrary(-500, 500);
+        var x = getRandomArbitrary(-5000, 5000);
         var y = getRandomArbitrary(0, 1);
-        var z = getRandomArbitrary(-500, -100);
+        var z = getRandomArbitrary(-5000, -1000);
         temp.position = new THREE.Vector3(x, y, z);
         this.gameObjectList.push(new GameObject(type + i, type, temp));
     }
@@ -85,8 +88,9 @@ function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-
-//GAMESCREEN CLASSES
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////GAMESCREEN CLASS////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 function GameScreen(name, scene, camera) {
     this.name = name;
     this.scene = scene;
@@ -103,42 +107,48 @@ GameScreen.prototype.Update = function (keyboard, delta, scope) {
     }
 
     if (this.name == "GamePlayScreen") {
-        if (controlsAttachedFlag == true) {
-            controls.update(delta);
-
+        //update game objects
             for (var i = 0; i < gameObjectManager.gameObjectList.length; i++) {
 
                 if (gameObjectManager.gameObjectList[i].name == 'PlayerShip1') {
-                   
-                    var relativeCameraOffset = new THREE.Vector3(0, 200, -1000);
-                    var cameraOffset = relativeCameraOffset.applyMatrix4(gameObjectManager.gameObjectList[i].model.matrixWorld);
-
-                    var cameraUp = new THREE.Vector3(0, 1, 0);
-                    var cameraUpMatrix = new THREE.Matrix4();
-                    var cameraUpRotMatrix = cameraUpMatrix.makeRotationFromQuaternion(gameObjectManager.gameObjectList[i].model.quaternion)
-
-                    this.camera.position.x = cameraOffset.x;
-                    this.camera.position.y = cameraOffset.y;
-                    this.camera.position.z = cameraOffset.z;
-                    this.camera.up = cameraUp.applyMatrix4(cameraUpRotMatrix);
-                    this.camera.lookAt(gameObjectManager.gameObjectList[i].model.position);
-
-                    //binding ship position property to UI
-                    var t = gameObjectManager.gameObjectList[i].model;
-                    document.querySelector('#shipPosition').innerHTML = 'Ship Position: <br /> x = ' + t.position.x + ', <br /> y = ' + t.position.y + ', <br /> z = ' + t.position.z;
-                    document.querySelector('#cameraPosition').innerHTML = 'Camera Position: <br /> x = ' + this.camera.position.x + ', <br /> y = ' + this.camera.position.y + ', <br /> z = ' + this.camera.position.z;
-
+                    //Update ship position and rotation based on keyboard input
+                    if (controlsAttachedFlag == true) {
+                        controls.update(delta);
+                    }
+                    this.UpdateCamera(this, i);
+                    this.UpdateUI(this, i);
                 }
+                
             }
-        }
     }
 }
 
-GameScreen.prototype.UpdateGameScene = function (scope) {
+GameScreen.prototype.UpdateCamera = function (scope, counter) {
+    var relativeCameraOffset = new THREE.Vector3(0, 200, -1000);
+    var cameraOffset = relativeCameraOffset.applyMatrix4(gameObjectManager.gameObjectList[counter].model.matrixWorld);
 
+    var cameraUp = new THREE.Vector3(0, 1, 0);
+    var cameraUpMatrix = new THREE.Matrix4();
+    var cameraUpRotMatrix = cameraUpMatrix.makeRotationFromQuaternion(gameObjectManager.gameObjectList[counter].model.quaternion)
+
+    scope.camera.position.x = cameraOffset.x;
+    scope.camera.position.y = cameraOffset.y;
+    scope.camera.position.z = cameraOffset.z;
+    scope.camera.up = cameraUp.applyMatrix4(cameraUpRotMatrix);
+    scope.camera.lookAt(gameObjectManager.gameObjectList[counter].model.position);
 }
 
+GameScreen.prototype.UpdateUI = function (scope, counter) {
 
+    var t = gameObjectManager.gameObjectList[counter].model;
+        document.querySelector('#shipPosition').innerHTML = 'Ship Position: <br /> x = ' + t.position.x + ', <br /> y = ' + t.position.y + ', <br /> z = ' + t.position.z;
+        document.querySelector('#cameraPosition').innerHTML = 'Camera Position: <br /> x = ' + scope.camera.position.x + ', <br /> y = ' + scope.camera.position.y + ', <br /> z = ' + scope.camera.position.z;
+    
+}
+
+////////////////////////////////////////////////////////////////////////////////
+///////////////////////////GameScreenManager CLASS//////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 function GameScreenManager(gameScreen) {
 
     this.currentScreen = gameScreen;
@@ -179,8 +189,7 @@ GameScreenManager.prototype.Initialize = function () {
     // CAMERA
     gamePlayCamera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 20000);
     gamePlayScene.add(gamePlayCamera);
-    //gamePlayCamera.position.set(0, 0, 2000);
-    //gamePlayCamera.lookAt(gamePlayScene.position);
+    gameObjectManager.gameObjectList.push(gamePlayCamera);
     //HUD
     
     // LIGHT

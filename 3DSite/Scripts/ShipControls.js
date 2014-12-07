@@ -10,21 +10,15 @@ THREE.ShipControls = function (object, domElement) {
     if (domElement) this.domElement.setAttribute('tabindex', -1);
 
     // API
-
     this.movementSpeed = 1.0;
-    this.rollSpeed = 0.005;
-
+    this.rollSpeed = 5.0;
     this.dragToLook = false;
     this.autoForward = false;
 
     // disable default target object behavior
-
     // internals
-
     this.tmpQuaternion = new THREE.Quaternion();
-
     this.mouseStatus = 0;
-
     this.moveState = { up: 0, down: 0, left: 0, right: 0, forward: 0, back: 0, pitchUp: 0, pitchDown: 0, yawLeft: 0, yawRight: 0, rollLeft: 0, rollRight: 0 };
     this.moveVector = new THREE.Vector3(0, 0, 0);
     this.rotationVector = new THREE.Vector3(0, 0, 0);

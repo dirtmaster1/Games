@@ -633,9 +633,9 @@ tr.pager td {
             padding: 0;
         }
 
-        #login a:hover {
-            color: #333;
-        }
+            #login a:hover {
+                color: #333;
+            }
 
     /* menu */
     nav {
@@ -700,12 +700,12 @@ tr.pager td {
                 background: none;
             }
 
-     /* features */
-     section.feature {
+    /* features */
+    section.feature {
         float: none;
         padding: 10px;
         width: auto;
-     }
+    }
 
         section.feature img {
             color: #999;
@@ -755,3 +755,21 @@ tr.pager td {
             margin: 0;
         }
 }
+
+/* CUSTOM FONTS */
+@font-face {
+    font-family: 'Aurora'; /*a name to be used later*/
+    src: url('http://localhost:49517/Content/Fonts/aurora.ttf'); /*URL to font*/
+}
+/* UI  */
+#UI {
+        top: 0px;
+        width: 150px;
+        height: 100%;
+        text-align: left;
+        color: white;
+        font-family: 'Times New Roman';
+        font-size: xx-small;    
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
