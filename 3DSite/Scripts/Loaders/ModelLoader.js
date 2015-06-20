@@ -20,7 +20,6 @@ ModelLoader.prototype.Load = function (url, callback) {
         }
     }
     xhr.open('GET', url, false);
-    xhr.withCredentials = false;
     xhr.send(null);
 };
 

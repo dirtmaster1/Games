@@ -52,6 +52,7 @@ GameObjectManager.prototype.CreateGameObjects = function (count, type, modelId, 
     for (i = start; i < count + start; i++)
     {
         var temp = modelData[0].model.clone();
+        temp.name = type + i
         var x = getRandomArbitrary(-5000, 5000);
         var y = getRandomArbitrary(0, 1);
         var z = getRandomArbitrary(-5000, -1000);
@@ -71,6 +72,7 @@ GameObjectManager.prototype.CreateGameObject = function (type, modelId, startPos
     }
 
     var temp = modelData[0].model.clone();
+    temp.name = type + "1"
     temp.position = startPosition;
     temp.rotation.y = startRotation;
     this.gameObjectList.push(new GameObject(type + "1", type, temp));

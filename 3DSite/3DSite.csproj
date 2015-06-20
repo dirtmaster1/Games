@@ -292,6 +292,7 @@
     <Content Include="Scripts\Specs\ModelLoadTestList.js" />
     <Content Include="Scripts\ShipControls.js" />
     <Content Include="Scripts\three.js" />
+    <Content Include="Scripts\Utilities\mousePicker.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

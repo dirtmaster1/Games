@@ -30,6 +30,7 @@ namespace _3DSite
 
             bundles.Add(new ScriptBundle("~/bundles/gameCode").Include(
                         "~/Scripts/GameClasses/GameObject.js",
+                        "~/Scripts/Utilities/mousePicker.js",
                         "~/Scripts/GameClasses/KeyBoardState.js",
                         "~/Scripts/ShipControls.js"));
 

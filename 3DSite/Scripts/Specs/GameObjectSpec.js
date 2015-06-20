@@ -114,13 +114,14 @@ describe("Chase Camera", function () {
     });
 });
 
-
-
 describe("Mouse Picking", function () {
 
     var camera = new THREE.PerspectiveCamera(45, 7 / 5, 1, 10000);
     var projector = new THREE.Projector();
+    var scene = new THREE.Scene();
     var mouseVector = new THREE.Vector3();
+    var geom = new THREE.CubeGeometry(5, 5, 5);
+    var cubes = new THREE.Object3D();
 
     beforeEach(function () {
         
@@ -130,11 +131,24 @@ describe("Mouse Picking", function () {
     });
 
     it("Should Intersect with Object", function () {
-        mouseVector.x = 0;
-        mouseVector.y = 0;
+
+        scene.add(cubes);
+
+            var grayness = Math.random() * 0.5 + 0.25,
+            mat = new THREE.MeshBasicMaterial(),
+            cube = new THREE.Mesh(geom, mat);
+            mat.color.setRGB(grayness, grayness, grayness);
+            cube.position.set(50, 50, 50);
+            cube.grayness = grayness; // *** NOTE THIS
+            cubes.add(cube);
+       
+
+        mouseVector.x = 52;
+        mouseVector.y = 52;
         var raycaster = projector.pickingRay(mouseVector.clone(), camera);
         //TODO create cube object to use as test object
         var intersects = raycaster.intersectObjects(cubes.children);
+        expect(intersects.length).toBe(1);
     });
 
 });

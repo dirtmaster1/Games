@@ -36,7 +36,10 @@ function LoadContent() {
                     var callbackModel = function (geometry, materials) { createScene(geometry, materials) };
                     loader.load(model.Model.sourceFilePath, callbackModel);
                     function createScene(geometry, materials) {
-                        object = new THREE.Mesh(geometry, new THREE.MeshFaceMaterial(materials));
+
+                        object = new THREE.Object3D();
+                        var mesh = new THREE.Mesh(geometry, new THREE.MeshFaceMaterial(materials));
+                        object.add(mesh);
                         var modelData = new ModelData(model.Model.modelId, object);
                         modelList.push(modelData);
                         loadContentComplete();
