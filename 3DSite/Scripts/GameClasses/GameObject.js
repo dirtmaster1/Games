@@ -43,6 +43,7 @@ GameObjectManager.prototype.Initialize = function (models) {
 GameObjectManager.prototype.CreateGameObjects = function (count, type, modelId, modelList) {
     var start = this.gameObjectList.length;
     var modelData = modelList.filter(getModelById);
+
     function getModelById(obj) {
         if (obj.id == modelId) {
             return obj
