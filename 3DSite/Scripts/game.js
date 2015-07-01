@@ -1,7 +1,5 @@
 ﻿//game lists
 var renderer;
-//game flags
-//var controlsAttachedFlag = false;
 //managers
 var gameObjectManager = new GameObjectManager();
 var gameScreenManager = new GameScreenManager(new GameScreen());
@@ -32,6 +30,7 @@ function Initialize() {
 function Render() {
     var delta = clock.getDelta();
     keyboard.update();
+    renderer.setSize(window.innerWidth, window.innerHeight);
     gameScreenManager.Update(keyboard, delta);
     requestAnimationFrame(Render);
     renderer.render(gameScreenManager.currentScreen.scene, gameScreenManager.currentScreen.camera);

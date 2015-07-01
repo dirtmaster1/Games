@@ -12,12 +12,14 @@ function onMouseClick(e) {
 
     var raycaster = projector.pickingRay(mouseVector.clone(), gameScreenManager.currentScreen.camera);
 
-    //alert(mouseVector.x + ' ' + mouseVector.y + ' ' + raycaster.ray.direction.x + ' ' + raycaster.ray.direction.y + ' ' + raycaster.ray.direction.z);
     var gameObjects = [];
 
     gameObjectManager.gameObjectList.forEach(function (obj) {
-        if (obj.model != undefined) {
-            gameObjects.push(obj.model);
+        //if (obj instanceof GameObject) {
+            if (obj.__proto__ == GameObject.prototype) {
+                
+                gameObjects.push(obj.model);
+                
         }
     });
 
@@ -26,7 +28,7 @@ function onMouseClick(e) {
     if (intersects.length > 0)
     {
         alert('Object Intersected:' + intersects[0].object.parent.name + ' - Mouse Picker Success ' + 'Mouse Click' + ' mouseX: ' + e.clientX + ' mouseY: ' + e.clientY);
-
+        var test = gameObjects["PlayerShip1"];
     }
 
 }

@@ -8,7 +8,7 @@ ModelLoader.prototype.Load = function (url, callback) {
     var data;
     var modelList = [];
     var xhr = new XMLHttpRequest();
-    xhr.open('GET', url, false);
+    
     xhr.onreadystatechange = function () {
         if (xhr.readyState === xhr.DONE) {
 
@@ -84,6 +84,7 @@ ModelLoader.prototype.Load = function (url, callback) {
             }
         }
     }
+    xhr.open('GET', url, false);
     xhr.send(null);
 };
 
