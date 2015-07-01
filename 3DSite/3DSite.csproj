@@ -262,9 +262,10 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />
-    <Content Include="Scripts\FlyControls.js" />
-    <Content Include="Scripts\game.js" />
+    <Content Include="Scripts\Utilities\FlyControls.js" />
+    <Content Include="Scripts\GameClasses\Game.js" />
     <Content Include="Scripts\GameClasses\GameObject.js" />
+    <Content Include="Scripts\GameClasses\GameScreen.js" />
     <Content Include="Scripts\GameClasses\KeyboardState.js" />
     <Content Include="Scripts\jasmine-html.js" />
     <Content Include="Scripts\jasmine.js" />
@@ -290,8 +291,9 @@
     <Content Include="Scripts\Specs\GameObjectSpec.js" />
     <Content Include="Scripts\Specs\ModelLoaderSpec.js" />
     <Content Include="Scripts\Specs\ModelLoadTestList.js" />
-    <Content Include="Scripts\ShipControls.js" />
+    <Content Include="Scripts\Utilities\ShipControls.js" />
     <Content Include="Scripts\three.js" />
+    <Content Include="Scripts\Utilities\Helpers.js" />
     <Content Include="Scripts\Utilities\mousePicker.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">

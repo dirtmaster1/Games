@@ -30,9 +30,11 @@ namespace _3DSite
 
             bundles.Add(new ScriptBundle("~/bundles/gameCode").Include(
                         "~/Scripts/GameClasses/GameObject.js",
+                        "~/Scripts/GameClasses/GameScreen.js",
                         "~/Scripts/Utilities/mousePicker.js",
+                        "~/Scripts/Utilities/Helpers.js",
                         "~/Scripts/GameClasses/KeyBoardState.js",
-                        "~/Scripts/ShipControls.js"));
+                        "~/Scripts/Utilities/ShipControls.js"));
 
             // Use the development version of Modernizr to develop with and learn from. Then, when you're
             // ready for production, use the build tool at http://modernizr.com to pick only the tests you need.
