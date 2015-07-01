@@ -59,6 +59,7 @@ GameScreen.prototype.UpdateUI = function (scope) {
 ////////////////////////////////////////////////////////////////////////////////
 function GameScreenManager(gameScreen) {
 
+
     this.currentScreen = gameScreen;
     this.previousScreen;
     this.gameScreenList = {};
