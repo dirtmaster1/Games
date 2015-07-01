@@ -5,7 +5,7 @@ var gameObjectManager = new GameObjectManager();
 var gameScreenManager = new GameScreenManager(new GameScreen());
 //input
 var keyboard = new KeyboardState();;
-var controls;
+var playerShip; 
 //game time
 var clock = new THREE.Clock();
 

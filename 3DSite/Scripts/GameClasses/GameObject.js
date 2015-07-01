@@ -5,8 +5,6 @@ function GameObject(name, type, model) {
     this.name = name;
     this.type = type;
     this.model = model;
-    this.velocity =  new THREE.Vector3();
-
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -19,10 +17,10 @@ function GameObjectManager() {
 GameObjectManager.prototype.Initialize = function (models) {
 
     var modelList = models;
+    
     this.CreateGameObjects(5, "Enemy", 3, modelList);
     this.CreateGameObject("PlayerShip", 1, new THREE.Vector3(0, 0, 500), Math.PI, modelList);
-    //this.CreateGameObject("PlayerShip", 1, new THREE.Vector3(0, 0, 500), 0, modelList);
-
+    
     // loop thru game objects to place objects in scene and find player ship and bind controls
     for (var i = 0; i < this.gameObjectList.length; i++) {
         
@@ -30,12 +28,12 @@ GameObjectManager.prototype.Initialize = function (models) {
 
         //bind and configure fly controls to player ship
         if (this.gameObjectList[i].name == 'PlayerShip1') {
-            controls = new THREE.ShipControls(this.gameObjectList[i].model);
-            controls.movementSpeed = 1000;
-            controls.rollSpeed = Math.PI / 5;
-            controls.autoForward = false;
-            controls.dragToLook = false;
-            controlsAttachedFlag = true;
+            var controls = new THREE.ShipControls(this.gameObjectList[i].model);
+            playerShip = new PlayerShip(this.gameObjectList[i].model, controls);
+            playerShip.controls.movementSpeed = 1000;
+            playerShip.controls.rollSpeed = Math.PI / 5;
+            playerShip.controls.autoForward = false;
+            playerShip.controls.dragToLook = false;
         }
     }
 }

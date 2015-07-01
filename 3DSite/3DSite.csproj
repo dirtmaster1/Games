@@ -262,6 +262,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />
+    <Content Include="Scripts\GameClasses\PlayerShip.js" />
     <Content Include="Scripts\Utilities\FlyControls.js" />
     <Content Include="Scripts\GameClasses\Game.js" />
     <Content Include="Scripts\GameClasses\GameObject.js" />

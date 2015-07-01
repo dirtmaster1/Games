@@ -19,42 +19,39 @@ GameScreen.prototype.Update = function (keyboard, delta, scope) {
         //update game objects
         for (var i = 0; i < gameObjectManager.gameObjectList.length; i++) {
 
-            if (gameObjectManager.gameObjectList[i].name == 'PlayerShip1') {
-                //Update ship position and rotation based on keyboard input
-                if (controlsAttachedFlag) {
-                    controls.update(delta);
-                }
-                this.UpdateCamera(this, i);
-                this.UpdateUI(this, i);
-            }
-
         }
+
+            //Update ship position and rotation based on keyboard input
+            if (playerShip.controls) {
+                playerShip.controls.update(delta);
+            }
+            this.UpdateCamera(this);
+            this.UpdateUI(this);
     }
 }
 
-GameScreen.prototype.UpdateCamera = function (scope, counter) {
+GameScreen.prototype.UpdateCamera = function (scope) {
     var relativeCameraOffset = new THREE.Vector3(0, 200, -1000);
-    var cameraOffset = relativeCameraOffset.applyMatrix4(gameObjectManager.gameObjectList[counter].model.matrixWorld);
+    var cameraOffset = relativeCameraOffset.applyMatrix4(playerShip.model.matrixWorld);
 
     var cameraUp = new THREE.Vector3(0, 1, 0);
     var cameraUpMatrix = new THREE.Matrix4();
-    var cameraUpRotMatrix = cameraUpMatrix.makeRotationFromQuaternion(gameObjectManager.gameObjectList[counter].model.quaternion)
+    var cameraUpRotMatrix = cameraUpMatrix.makeRotationFromQuaternion(playerShip.model.quaternion)
 
     scope.camera.position.x = cameraOffset.x;
     scope.camera.position.y = cameraOffset.y;
     scope.camera.position.z = cameraOffset.z;
     scope.camera.up = cameraUp.applyMatrix4(cameraUpRotMatrix);
-    scope.camera.lookAt(gameObjectManager.gameObjectList[counter].model.position);
+    scope.camera.lookAt(playerShip.model.position);
     scope.camera.aspect = window.innerWidth / window.innerHeight;
     scope.camera.updateProjectionMatrix();
 }
 
-GameScreen.prototype.UpdateUI = function (scope, counter) {
+GameScreen.prototype.UpdateUI = function (scope) {
 
-    var t = gameObjectManager.gameObjectList[counter].model;
-    document.querySelector('#shipPosition').innerHTML = 'Ship Position: <br /> x = ' + t.position.x + ', <br /> y = ' + t.position.y + ', <br /> z = ' + t.position.z;
+    document.querySelector('#shipPosition').innerHTML = 'Ship Position: <br /> x = ' + playerShip.model.position.x + ', <br /> y = ' + playerShip.model.position.y + ', <br /> z = ' + playerShip.model.position.z;
     document.querySelector('#cameraPosition').innerHTML = 'Camera Position: <br /> x = ' + scope.camera.position.x + ', <br /> y = ' + scope.camera.position.y + ', <br /> z = ' + scope.camera.position.z;
-    document.querySelector('#shipTarget').innerHTML = 'No Target';
+    document.querySelector('#shipTarget').innerHTML = playerShip.target;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
