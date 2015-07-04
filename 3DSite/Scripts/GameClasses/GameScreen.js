@@ -49,9 +49,22 @@ GameScreen.prototype.UpdateCamera = function (scope) {
 
 GameScreen.prototype.UpdateUI = function (scope) {
 
-    document.querySelector('#shipPosition').innerHTML = 'Ship Position: <br /> x = ' + playerShip.model.position.x + ', <br /> y = ' + playerShip.model.position.y + ', <br /> z = ' + playerShip.model.position.z;
+    var shipPos = new THREE.Vector3(0, 0, 0);
+    var targetPos = new THREE.Vector3(0, 0, 0);;
+    var distance = 0;
+    var targetName = "No Target";
+
+    if (playerShip.target != null && playerShip.model != null)
+    {
+        targetPos = playerShip.target.position;
+        targetName = playerShip.target.name;
+        shipPos = playerShip.model.position;
+        distance = shipPos.distanceTo(targetPos);
+    }
+
+    document.querySelector('#shipPosition').innerHTML = 'Ship Position: <br /> x = ' + shipPos.x + ', <br /> y = ' + shipPos.y + ', <br /> z = ' + shipPos.z;
     document.querySelector('#cameraPosition').innerHTML = 'Camera Position: <br /> x = ' + scope.camera.position.x + ', <br /> y = ' + scope.camera.position.y + ', <br /> z = ' + scope.camera.position.z;
-    document.querySelector('#shipTarget').innerHTML = 'Target Name: ' + playerShip.target.name + '<br/> Distance to Target: ' + playerShip.model.position.distanceTo(playerShip.target.position);
+    document.querySelector('#shipTarget').innerHTML = 'Target Name: ' + targetName + '<br/> Distance to Target: ' + distance;
 }
 
 ////////////////////////////////////////////////////////////////////////////////

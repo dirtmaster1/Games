@@ -2,7 +2,7 @@
 
     this.model = model;
     this.controls = controls;
-    this.target = "";
+    this.target;
 
 };
 
