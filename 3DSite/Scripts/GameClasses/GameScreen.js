@@ -51,7 +51,7 @@ GameScreen.prototype.UpdateUI = function (scope) {
 
     document.querySelector('#shipPosition').innerHTML = 'Ship Position: <br /> x = ' + playerShip.model.position.x + ', <br /> y = ' + playerShip.model.position.y + ', <br /> z = ' + playerShip.model.position.z;
     document.querySelector('#cameraPosition').innerHTML = 'Camera Position: <br /> x = ' + scope.camera.position.x + ', <br /> y = ' + scope.camera.position.y + ', <br /> z = ' + scope.camera.position.z;
-    document.querySelector('#shipTarget').innerHTML = playerShip.target;
+    document.querySelector('#shipTarget').innerHTML = 'Target Name: ' + playerShip.target.name + '<br/> Distance to Target: ' + playerShip.model.position.distanceTo(playerShip.target.position);
 }
 
 ////////////////////////////////////////////////////////////////////////////////

@@ -28,7 +28,7 @@ function onMouseClick(e) {
     if (intersects.length > 0)
     {
         //alert('Object Intersected:' + intersects[0].object.parent.name + ' - Mouse Picker Success ' + 'Mouse Click' + ' mouseX: ' + e.clientX + ' mouseY: ' + e.clientY);
-        playerShip.target = intersects[0].object.parent.name;
+        playerShip.target = intersects[0].object.parent;
     }
 
 }
