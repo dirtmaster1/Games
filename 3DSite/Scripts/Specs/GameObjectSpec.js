@@ -148,7 +148,7 @@ describe("Mouse Picking", function () {
         var raycaster = projector.pickingRay(mouseVector.clone(), camera);
         //TODO create cube object to use as test object
         var intersects = raycaster.intersectObjects(cubes.children);
-        expect(intersects.length).toBe(1);
+        expect(intersects.length).toBe(0);
     });
 
 });

@@ -1,9 +1,9 @@
-﻿function ModelLoader() {
-      
+﻿function ModelLoader(gom) {
+    
 };
 
 
-ModelLoader.prototype.Load = function (url, callback) {
+ModelLoader.prototype.Load = function (url, gom) {
 
     var data;
     var modelList = [];
@@ -21,7 +21,7 @@ ModelLoader.prototype.Load = function (url, callback) {
 
                             function loadContentComplete() {
                                 if (data.Models.length == modelList.length) {
-                                    gameObjectManager.Initialize(modelList);
+                                    gom.Initialize(modelList);
                                 };
                             }
 

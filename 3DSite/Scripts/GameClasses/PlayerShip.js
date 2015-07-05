@@ -2,7 +2,11 @@
 
     this.model = model;
     this.controls = controls;
-    this.target;
-
 };
 
+PlayerShip.prototype = {
+
+    constructor: PlayerShip,
+    target: null
+
+};

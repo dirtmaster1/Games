@@ -6,7 +6,7 @@
                     "modelName" : "playerSpaceShipModel_1",
                     "loaderType" : "JSONLoader",
                     "loaderTypeId"    : 1,
-                    "sourceFilePath"   : "Content/Models/PlayerSpaceShip.js",
+                    "sourceFilePath"   : "/Content/Models/PlayerSpaceShip.js",
                     "textureFilePath1"      : "",
                     "textureFilePath2"         : "",
                     "mappingFilePath"       : ""
@@ -18,10 +18,10 @@
                     "modelName" : "playerSpaceShipModel_1",
                     "loaderType" : "OBJMTLLoader",
                     "loaderTypeId"    : 2,
-                    "sourceFilePath"   : "Content/Models/Feisar_Ship.obj",
+                    "sourceFilePath"   : "/Content/Models/Feisar_Ship.obj",
                     "textureFilePath1"      : "",
                     "textureFilePath2"         : "",
-                    "mappingFilePath"       : "Content/Models/Feisar_Ship.mtl"
+                    "mappingFilePath"       : "/Content/Models/Feisar_Ship.mtl"
                 }
 
         },
@@ -31,8 +31,8 @@
                     "modelName" : "enemyCrusierModel_1",
                     "loaderType" : "OBJLoader",
                     "loaderTypeId"    : 3,
-                    "sourceFilePath"   : "Content/Models/space_cruiser.obj",
-                    "textureFilePath1"      : "Content/Models/space_cruiser_4_color_1.jpg",
+                    "sourceFilePath"   : "/Content/Models/space_cruiser.obj",
+                    "textureFilePath1"      : "/Content/Models/space_cruiser_4_color_1.jpg",
                     "textureFilePath2"         : "",
                     "mappingFilePath"       : ""
                 }

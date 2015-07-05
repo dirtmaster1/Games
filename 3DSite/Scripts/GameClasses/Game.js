@@ -17,7 +17,7 @@ function LoadContent() {
     //MODEL LIST
     var modelListPath = "/Scripts/Loaders/ModelLoadList.js";
     var modelLoader = new ModelLoader();
-    modelLoader.Load(modelListPath);
+    modelLoader.Load(modelListPath, gameObjectManager);
 }
 
 function Initialize() {
