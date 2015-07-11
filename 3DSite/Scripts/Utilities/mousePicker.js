@@ -3,7 +3,6 @@ window.addEventListener('click', onMouseClick, false);
 
 function onMouseClick(e) {
     
-
     projector = new THREE.Projector();
     mouseVector = new THREE.Vector3();
 
@@ -14,7 +13,7 @@ function onMouseClick(e) {
 
     var gameObjects = [];
 
-    gameObjectManager.gameObjectList.forEach(function (obj) {
+    gameScreenManager.gameObjectManager.gameObjectList.forEach(function (obj) {
         //if (obj instanceof GameObject) {
             if (obj.__proto__ == GameObject.prototype) {
                 
@@ -27,7 +26,7 @@ function onMouseClick(e) {
 
     if (intersects.length > 0)
     {
-        //alert('Object Intersected:' + intersects[0].object.parent.name + ' - Mouse Picker Success ' + 'Mouse Click' + ' mouseX: ' + e.clientX + ' mouseY: ' + e.clientY);
+        var playerShip = FindGameObjectByName(gameScreenManager.gameObjectManager.gameObjectList, 'PlayerShip1')
         playerShip.target = intersects[0].object.parent;
     }
 

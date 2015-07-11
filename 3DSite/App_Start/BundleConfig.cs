@@ -32,7 +32,7 @@ namespace _3DSite
                            "~/Scripts/GameClasses/PlayerShip.js",
                         "~/Scripts/GameClasses/GameObject.js",
                         "~/Scripts/GameClasses/GameScreen.js",
-                        "~/Scripts/Utilities/mousePicker.js",
+                        //"~/Scripts/Utilities/mousePicker.js",
                         "~/Scripts/Utilities/Helpers.js",
                         "~/Scripts/GameClasses/KeyBoardState.js",
                         "~/Scripts/Utilities/ShipControls.js"));

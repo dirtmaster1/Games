@@ -1,11 +1,9 @@
-﻿//game lists
-var renderer;
+﻿var renderer;
 //managers
-var gameObjectManager = new GameObjectManager();
-var gameScreenManager = new GameScreenManager(new GameScreen());
+var gameScreenManager = new GameScreenManager(new GameScreen(), new GameObjectManager());
 //input
 var keyboard = new KeyboardState();;
-var playerShip; 
+
 //game time
 var clock = new THREE.Clock();
 
@@ -17,7 +15,7 @@ function LoadContent() {
     //MODEL LIST
     var modelListPath = "/Scripts/Loaders/ModelLoadList.js";
     var modelLoader = new ModelLoader();
-    modelLoader.Load(modelListPath, gameObjectManager);
+    modelLoader.Load(modelListPath, gameScreenManager.gameObjectManager);
 }
 
 function Initialize() {
@@ -34,6 +32,15 @@ function Render() {
     gameScreenManager.Update(keyboard, delta);
     requestAnimationFrame(Render);
     renderer.render(gameScreenManager.currentScreen.scene, gameScreenManager.currentScreen.camera);
+}
+
+function FindGameObjectByName(array, name) {
+    for (var i = 0; i < array.length; i++) {
+
+        if (array[i].name == name) {
+            return array[i];
+        }
+    }
 }
 
 

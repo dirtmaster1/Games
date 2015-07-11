@@ -7,7 +7,7 @@ function GameScreen(name, scene, camera) {
     this.camera = camera;
 }
 
-GameScreen.prototype.Update = function (keyboard, delta, scope) {
+GameScreen.prototype.Update = function (keyboard, delta, scope, gom) {
 
     if (this.name == "SplashScreen") {
         if (keyboard.down("enter")) {
@@ -16,21 +16,16 @@ GameScreen.prototype.Update = function (keyboard, delta, scope) {
     }
 
     if (this.name == "GamePlayScreen") {
-        //update game objects
-        for (var i = 0; i < gameObjectManager.gameObjectList.length; i++) {
-
-        }
-
-            //Update ship position and rotation based on keyboard input
-            if (playerShip.controls) {
-                playerShip.controls.update(delta);
-            }
-            this.UpdateCamera(this);
-            this.UpdateUI(this);
+        gom.Update(keyboard, delta);
+        this.UpdateCamera(this, gom);
+        this.UpdateUI(this, gom);
     }
 }
 
-GameScreen.prototype.UpdateCamera = function (scope) {
+GameScreen.prototype.UpdateCamera = function (scope, gom) {
+
+    var playerShip = FindGameObjectByName(gom.gameObjectList, 'PlayerShip1')
+
     var relativeCameraOffset = new THREE.Vector3(0, 200, -1000);
     var cameraOffset = relativeCameraOffset.applyMatrix4(playerShip.model.matrixWorld);
 
@@ -47,7 +42,9 @@ GameScreen.prototype.UpdateCamera = function (scope) {
     scope.camera.updateProjectionMatrix();
 }
 
-GameScreen.prototype.UpdateUI = function (scope) {
+GameScreen.prototype.UpdateUI = function (scope, gom) {
+
+    var playerShip = FindGameObjectByName(gom.gameObjectList, 'PlayerShip1')
 
     var shipPos = new THREE.Vector3(0, 0, 0);
     var targetPos = new THREE.Vector3(0, 0, 0);;
@@ -70,12 +67,13 @@ GameScreen.prototype.UpdateUI = function (scope) {
 ////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////GameScreenManager CLASS//////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-function GameScreenManager(gameScreen) {
+function GameScreenManager(gameScreen, gameObjectManager) {
 
 
     this.currentScreen = gameScreen;
     this.previousScreen;
     this.gameScreenList = {};
+    this.gameObjectManager = gameObjectManager;
 }
 
 GameScreenManager.prototype.Initialize = function () {
@@ -111,7 +109,7 @@ GameScreenManager.prototype.Initialize = function () {
     // CAMERA
     gamePlayCamera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 20000);
     gamePlayScene.add(gamePlayCamera);
-    gameObjectManager.gameObjectList.push(gamePlayCamera);
+    this.gameObjectManager.gameObjectList.push(gamePlayCamera);
     //HUD
 
     // LIGHT
@@ -137,5 +135,7 @@ GameScreenManager.prototype.ChangeScreen = function (gameScreen) {
 
 GameScreenManager.prototype.Update = function (keyboard, delta) {
     var scope = this;
-    this.currentScreen.Update(keyboard, delta, scope);
+    this.currentScreen.Update(keyboard, delta, scope, this.gameObjectManager);
 }
+
+

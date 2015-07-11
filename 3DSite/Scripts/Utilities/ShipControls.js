@@ -26,9 +26,7 @@ THREE.ShipControls = function (object, domElement) {
     this.handleEvent = function (event) {
 
         if (typeof this[event.type] == 'function') {
-
             this[event.type](event);
-
         }
 
     };
@@ -106,33 +104,61 @@ THREE.ShipControls = function (object, domElement) {
 
     };
 
+    this.mousepick = function (event) {
+
+        projector = new THREE.Projector();
+        mouseVector = new THREE.Vector3();
+
+        mouseVector.x = 2 * (event.clientX / window.innerWidth) - 1;
+        mouseVector.y = 1 - 2 * (event.clientY / window.innerHeight);
+
+        var raycaster = projector.pickingRay(mouseVector.clone(), gameScreenManager.currentScreen.camera);
+
+        var gameObjects = [];
+
+        gameScreenManager.gameObjectManager.gameObjectList.forEach(function (obj) {
+            //if (obj instanceof GameObject) {
+            if (obj.__proto__ == GameObject.prototype) {
+
+                gameObjects.push(obj.model);
+
+            }
+        });
+
+        var intersects = raycaster.intersectObjects(gameObjects, true);
+
+        if (intersects.length > 0) {
+            var playerShip = FindGameObjectByName(gameScreenManager.gameObjectManager.gameObjectList, 'PlayerShip1')
+            playerShip.target = intersects[0].object.parent;
+        }
+
+    }
+
     this.mousedown = function (event) {
 
         if (this.domElement !== document) {
-
             this.domElement.focus();
-
         }
 
         event.preventDefault();
         event.stopPropagation();
 
-        if (this.dragToLook) {
+        console.log('shoot', this.object);
+        //if (this.dragToLook) {
 
-            this.mouseStatus++;
+        //    this.mouseStatus++;
 
-        } else {
+        //} else {
 
-            switch (event.button) {
+        //    switch (event.button) {
 
-                case 0: this.moveState.forward = 1; break;
-                case 2: this.moveState.back = 1; break;
+        //        case 0: this.moveState.forward = 1; break;
+        //        case 2: this.moveState.back = 1; break;
 
-            }
+        //    }
 
-            this.updateMovementVector();
-
-        }
+        //    this.updateMovementVector();
+        //}
 
     };
 
@@ -254,7 +280,8 @@ THREE.ShipControls = function (object, domElement) {
     this.domElement.addEventListener('contextmenu', function (event) { event.preventDefault(); }, false);
 
     //this.domElement.addEventListener('mousemove', bind(this, this.mousemove), false);
-    //this.domElement.addEventListener('mousedown', bind(this, this.mousedown), false);
+    this.domElement.addEventListener('mousedown', bind(this, this.mousedown), false);
+    this.domElement.addEventListener('click', bind(this, this.mousepick), false);
     //this.domElement.addEventListener('mouseup', bind(this, this.mouseup), false);
 
     window.addEventListener('keydown', bind(this, this.keydown), false);

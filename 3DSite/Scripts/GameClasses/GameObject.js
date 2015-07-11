@@ -1,11 +1,23 @@
 ﻿////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////GameObject CLASS////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-function GameObject(name, type, model) {
+function GameObject(name, type, model, controls) {
     this.name = name;
     this.type = type;
     this.model = model;
+    this.controls = controls;
 }
+
+GameObject.prototype = {
+    constructor: GameObject,
+    target: null
+};
+
+GameObject.prototype.Update = function () { };
+
+GameObject.prototype.Attack = function () { };
+
+GameObject.prototype.Move = function () { };
 
 ////////////////////////////////////////////////////////////////////////////////
 /////////////////////GameObjectManager CLASS////////////////////////////////////
@@ -28,8 +40,9 @@ GameObjectManager.prototype.Initialize = function (models) {
 
         //bind and configure fly controls to player ship
         if (this.gameObjectList[i].name == 'PlayerShip1') {
+            var playerShip = this.gameObjectList[i];
             var controls = new THREE.ShipControls(this.gameObjectList[i].model);
-            playerShip = new PlayerShip(this.gameObjectList[i].model, controls);
+            playerShip.controls = controls;
             playerShip.controls.movementSpeed = 1000;
             playerShip.controls.rollSpeed = Math.PI / 5;
             playerShip.controls.autoForward = false;
@@ -77,6 +90,19 @@ GameObjectManager.prototype.CreateGameObject = function (type, modelId, startPos
     this.gameObjectList.push(new GameObject(type + "1", type, temp));
 
 }
+
+GameObjectManager.prototype.Update = function (keyboard, delta) {
+    //update game objects
+    for (var i = 0; i < this.gameObjectList.length; i++) {
+
+        if (this.gameObjectList[i].name == 'PlayerShip1' && this.gameObjectList[i].controls) {
+            //Update ship position and rotation based on keyboard input
+            this.gameObjectList[i].controls.update(delta);
+        }
+    }
+};
+
+
 
 
 

@@ -2,7 +2,6 @@
     
 };
 
-
 ModelLoader.prototype.Load = function (url, gom) {
 
     var data;
