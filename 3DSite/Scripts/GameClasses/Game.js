@@ -34,13 +34,6 @@ function Render() {
     renderer.render(gameScreenManager.currentScreen.scene, gameScreenManager.currentScreen.camera);
 }
 
-function FindGameObjectByName(array, name) {
-    for (var i = 0; i < array.length; i++) {
 
-        if (array[i].name == name) {
-            return array[i];
-        }
-    }
-}
 
 

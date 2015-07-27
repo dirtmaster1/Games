@@ -4,14 +4,16 @@
 
 THREE.ShipControls = function (object, domElement) {
 
-    this.object = object;
-
+    if (object.model == null) return;
+    this.object = object.model;
+    this.ship = object;
+   
     this.domElement = (domElement !== undefined) ? domElement : document;
     if (domElement) this.domElement.setAttribute('tabindex', -1);
 
     // API
     this.movementSpeed = 1.0;
-    this.rollSpeed = 5.0;
+    this.rollSpeed = 50.0;
     this.dragToLook = false;
     this.autoForward = false;
 
@@ -106,6 +108,7 @@ THREE.ShipControls = function (object, domElement) {
 
     this.mousepick = function (event) {
 
+        console.log('Mouse Pick!', this.ship);
         projector = new THREE.Projector();
         mouseVector = new THREE.Vector3();
 
@@ -134,6 +137,15 @@ THREE.ShipControls = function (object, domElement) {
 
     }
 
+    this.mouseshoot = function (event) {
+
+        event.preventDefault();
+        event.stopPropagation();
+
+        this.ship.Attack();
+
+    };
+
     this.mousedown = function (event) {
 
         if (this.domElement !== document) {
@@ -143,22 +155,24 @@ THREE.ShipControls = function (object, domElement) {
         event.preventDefault();
         event.stopPropagation();
 
+        
         console.log('shoot', this.object);
-        //if (this.dragToLook) {
 
-        //    this.mouseStatus++;
+        if (this.dragToLook) {
 
-        //} else {
+            this.mouseStatus++;
 
-        //    switch (event.button) {
+        } else {
 
-        //        case 0: this.moveState.forward = 1; break;
-        //        case 2: this.moveState.back = 1; break;
+            switch (event.button) {
 
-        //    }
+                case 0: this.moveState.forward = 1; break;
+                case 2: this.moveState.back = 1; break;
 
-        //    this.updateMovementVector();
-        //}
+            }
+
+            this.updateMovementVector();
+        }
 
     };
 
@@ -220,8 +234,7 @@ THREE.ShipControls = function (object, domElement) {
         this.object.quaternion.multiply(this.tmpQuaternion);
 
         // expose the rotation vector for convenience
-        this.object.rotation.setFromQuaternion(this.object.quaternion, this.object.rotation.order);
-
+        //this.object.rotation.setFromQuaternion(this.object.quaternion, this.object.rotation.order);
 
     };
 
@@ -233,7 +246,7 @@ THREE.ShipControls = function (object, domElement) {
         this.moveVector.y = (-this.moveState.down + this.moveState.up);
         this.moveVector.z = (-forward + this.moveState.back);
 
-        //console.log( 'move:', [ this.moveVector.x, this.moveVector.y, this.moveVector.z ] );
+       console.log( 'move:', [ this.moveVector.x, this.moveVector.y, this.moveVector.z ] );
 
     };
 
@@ -243,7 +256,7 @@ THREE.ShipControls = function (object, domElement) {
         this.rotationVector.y = (-this.moveState.yawRight + this.moveState.yawLeft);
         this.rotationVector.z = (-this.moveState.rollRight + this.moveState.rollLeft);
 
-        //console.log( 'rotate:', [ this.rotationVector.x, this.rotationVector.y, this.rotationVector.z ] );
+        console.log( 'rotate:', [ this.rotationVector.x, this.rotationVector.y, this.rotationVector.z ] );
 
     };
 
@@ -280,8 +293,9 @@ THREE.ShipControls = function (object, domElement) {
     this.domElement.addEventListener('contextmenu', function (event) { event.preventDefault(); }, false);
 
     //this.domElement.addEventListener('mousemove', bind(this, this.mousemove), false);
-    this.domElement.addEventListener('mousedown', bind(this, this.mousedown), false);
-    this.domElement.addEventListener('click', bind(this, this.mousepick), false);
+    //this.domElement.addEventListener('mousedown', bind(this, this.mousedown), false);
+    window.addEventListener('click', bind(this, this.mouseshoot), false);
+    window.addEventListener('click', bind(this, this.mousepick), false);
     //this.domElement.addEventListener('mouseup', bind(this, this.mouseup), false);
 
     window.addEventListener('keydown', bind(this, this.keydown), false);
