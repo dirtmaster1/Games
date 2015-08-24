@@ -20,17 +20,8 @@ GameObject.prototype.Update = function () {
 };
 
 GameObject.prototype.Attack = function () {
-    console.log('Attack!', this.type);
-
-    var sphere = new THREE.Object3D();
-    var sphereGeometry = new THREE.SphereGeometry(10, 16, 8);
-    var sphereMaterial = new THREE.MeshLambertMaterial({ color: 0xFFFFFF });
-    var sphereMesh = new THREE.Mesh(sphereGeometry, sphereMaterial);
-    sphere.add(sphereMesh);
-
-    sphere.rotation = this.model.rotation.clone();
-    sphere.position.set(this.model.position.x, this.model.position.y, this.model.position.z);
-    gameScreenManager.gameScreenList["gamePlayScreen"].scene.add(sphere);
+    
+    var sphere = CreateProjectile.apply(this);
     this.projectileList.push(sphere);
 };
 
@@ -108,9 +99,24 @@ GameObjectManager.prototype.CreateGameObject = function (type, modelId, startPos
 
 }
 
+GameObjectManager.prototype.GetCollidableObjects = function () {
+
+    var gameCollidableObjects = [];
+    this.gameObjectList.forEach(function (obj) {
+        //if (obj instanceof GameObject) {
+        if (obj.__proto__ == GameObject.prototype) {
+
+            gameCollidableObjects.push(obj.model);
+
+        }
+    });
+
+    return gameCollidableObjects;
+}
+
 GameObjectManager.prototype.Update = function (keyboard, delta) {
      for (var i = 0; i < this.gameObjectList.length; i++) {
-   
+            
             
      }
 
@@ -119,14 +125,10 @@ GameObjectManager.prototype.Update = function (keyboard, delta) {
 
      for (var j = 0; j < this.playerShip.projectileList.length; j++)
      { 
-         //var matrix1 = new THREE.Matrix4();
-         //matrix1.extractRotation(this.playerShip.projectileList[j].matrixWorld);
-
          var direction = new THREE.Vector3(0, 0, 1);
-         //direction.applyMatrix4(matrix1);
-         //direction.normalize();
-       
          this.playerShip.projectileList[j].translateZ(100);
+
+         Intersect(this.playerShip.projectileList[j], this.GetCollidableObjects())
      }
 };
 
@@ -139,21 +141,43 @@ function FindGameObjectByName(array, name) {
     }
 }
 
-function Intersect(object, objectList, callback) {
+function Intersect(object, objectList) {
 
-    for (var vertexIndex = 0; vertexIndex < object.geometry.vertices.length; vertexIndex++) {
-        var localVertex = object.geometry.vertices[vertexIndex].clone();
-        var globalVertex = object.matrix.multiplyVector3(localVertex);
-        var directionVector = globalVertex.subSelf(object.position);
+    for (var vertexIndex = 0; vertexIndex < 1; vertexIndex++) {
+        //object.children[0].geometry.vertices.length
+        var localVertex = object.children[0].geometry.vertices[vertexIndex].clone();
+        var globalVertex = localVertex.applyMatrix4(object.matrix);
+        var directionVector = globalVertex.sub(object.position);
+        
+        var ray = new THREE.Raycaster(object.position, directionVector.clone().normalize());
 
-        var ray = new THREE.Ray(object.position, directionVector.clone().normalize());
-        var collisionResults = ray.intersectObjects(objectList);
+        var collisionResults = ray.intersectObjects(objectList, true);
+
         if (collisionResults.length > 0 && collisionResults[0].distance < directionVector.length()) {
-            callback;
+            console.log('Hit', collisionResults[0].object.parent.name);
         }
     }
 
 };
+
+function RemoveGameObject() {
+
+};
+
+function CreateProjectile()
+{
+    var sphere = new THREE.Object3D();
+    var sphereGeometry = new THREE.SphereGeometry(10, 16, 8);
+    var sphereMaterial = new THREE.MeshLambertMaterial({ color: 0xFFFFFF });
+    var sphereMesh = new THREE.Mesh(sphereGeometry, sphereMaterial);
+    sphere.add(sphereMesh);
+
+    sphere.rotation = this.model.rotation.clone();
+    sphere.position.set(this.model.position.x, this.model.position.y, this.model.position.z);
+    gameScreenManager.gameScreenList["gamePlayScreen"].scene.add(sphere);
+    
+    return sphere;
+}
 
 
 

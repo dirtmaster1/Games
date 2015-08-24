@@ -1,4 +1,5 @@
-﻿var renderer;
+﻿"use strict";
+var renderer;
 //managers
 var gameScreenManager = new GameScreenManager(new GameScreen(), new GameObjectManager());
 //input
